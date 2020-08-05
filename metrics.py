@@ -40,7 +40,7 @@ def pdist(sample_1, sample_2, norm=2, eps=1e-5):
         inner = np.sum(differences, axis=2, keepdims=False)
         return (eps + inner) ** (1. / norm)
 
-def MMD(sample_1,sample_2,alphas):
+def MMDkernel(sample_1,sample_2,alphas):
     r"""Evaluate the statistic.
     The kernel used is
     .. math::
@@ -101,3 +101,20 @@ def RMSE(sample_1,sample_2):
     norm = np.sum((sample_1-sample_2)**2,axis=1,keepdims=True)
     RMSE = np.sqrt(np.mean(norm,axis=0))
     return RMSE
+
+def MMD(sample_1,sample_2):
+    r"""Evaluate the statistic.
+    Arguments
+    ---------
+    sample_1: :numpy.array
+        The first sample, of size ``(n_1, d)``.
+    sample_2: numpy.array
+        The second sample, of size ``(n_2, d)``.
+    
+    Returns
+    -------
+    :class:`float`
+        The test statistic."""
+   
+    sigma = [pairwisedistances(sample_1,sample_2)]
+    return MMDkernel(sample_1,sample_2,sigma)
